@@ -1,0 +1,5 @@
+# requirements.txt
+# Week 1 Python Internship Task
+# This project uses only built-in Python functions (input, print, variables).
+# No external libraries are required.
+
