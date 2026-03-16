@@ -1,0 +1,19 @@
+Test Case 1
+Input: Priya, 95
+Output: Grade A
+
+Test Case 2
+Input: Rahul, 85
+Output: Grade B
+
+Test Case 3
+Input: Anjali, 75
+Output: Grade C
+
+Test Case 4
+Input: Aman, 65
+Output: Grade D
+
+Test Case 5
+Input: Riya, 40
+Output: Grade F
