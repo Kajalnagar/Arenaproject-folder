@@ -1,10 +1,46 @@
 
-
-#Day 3: Clean Data
 import pandas as pd
 
-# Load dataset
+
+# Day 1: Setup & Load Data
+
+
+# Read the CSV file
+# read_csv() loads the dataset into a DataFrame
 df = pd.read_csv("sales.csv")
+
+# Display full dataset
+print("Full Dataset:")
+print(df)
+
+# Show first 5 rows of dataset
+# head() is useful for quickly checking data
+print("\nFirst 5 Rows:")
+print(df.head())
+
+
+# Day 2: Explore Data
+
+
+# Shape shows number of rows and columns
+print("\nShape of dataset (rows, columns):")
+print(df.shape)
+
+# Show column names
+print("\nColumn Names:")
+print(df.columns)
+
+# Show data types of each column
+print("\nData Types:")
+print(df.dtypes)
+
+# Show complete summary of dataset
+print("\nDataset Information:")
+print(df.info())
+
+
+#Day 3: Clean Data
+
 
 # Check missing values in each column
 print("\nMissing Values:")
