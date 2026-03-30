@@ -1,0 +1,11 @@
+Product,Month,Quantity,Price,City
+Laptop,Jan,5,50000,Delhi
+Phone,Jan,10,20000,Mumbai
+Tablet,Feb,4,15000,Delhi
+Laptop,Feb,3,50000,Bangalore
+Phone,Mar,8,20000,Delhi
+Tablet,Mar,5,15000,Mumbai
+Laptop,Apr,6,50000,Delhi
+Phone,Apr,7,20000,Bangalore
+Tablet,May,6,15000,Delhi
+Phone,May,9,20000,Mumbai
