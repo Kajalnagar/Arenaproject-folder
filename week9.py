@@ -8,7 +8,7 @@ import seaborn as sns
 
 np.random.seed(42)
 
-# Generate dataset (600 rows)
+# Create dataset (600 rows)
 n = 600
 data = pd.DataFrame({
     "Marketing_Spend": np.random.normal(50000, 12000, n),
@@ -17,7 +17,7 @@ data = pd.DataFrame({
     "Customer_Segment": np.random.choice(["Retail", "Corporate"], n)
 })
 
-# Target variable
+# Target variable (Sales)
 data["Sales"] = (
     1000
     + 2.5 * data["Marketing_Spend"]
@@ -28,9 +28,10 @@ data["Sales"] = (
 print("\n--- DATA PREVIEW ---")
 print(data.head())
 
+# Missing values
 print("\nMissing Values:\n", data.isnull().sum())
 
-# Visualization
+# Relationship visualization
 sns.pairplot(data.select_dtypes(include=[np.number]))
 plt.show()
 
@@ -41,7 +42,7 @@ plt.show()
 # Handle missing values
 data = data.dropna()
 
-# Convert categorical variables
+# Convert categorical → numeric
 data = pd.get_dummies(data, drop_first=True)
 
 # Features & target
@@ -50,7 +51,9 @@ y = data["Sales"]
 
 # Train-test split
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 
 
@@ -59,17 +62,14 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 class LinearRegressionScratch:
     def fit(self, X, y):
         X_b = np.c_[np.ones((X.shape[0], 1)), X]
-        self.theta = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y)
+        self.theta = np.linalg.inv(X_b.T @ X_b) @ X_b.T @ y
 
     def predict(self, X):
         X_b = np.c_[np.ones((X.shape[0], 1)), X]
-        return X_b.dot(self.theta)
+        return X_b @ self.theta
 
-# Train
 lr_scratch = LinearRegressionScratch()
 lr_scratch.fit(X_train.values, y_train.values)
-
-# Predict
 y_pred_scratch = lr_scratch.predict(X_test.values)
 
 
@@ -80,7 +80,6 @@ from sklearn.linear_model import LinearRegression
 
 lr = LinearRegression()
 lr.fit(X_train, y_train)
-
 y_pred = lr.predict(X_test)
 
 
@@ -89,8 +88,7 @@ y_pred = lr.predict(X_test)
 
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-print("\n--- MODEL EVALUATION ---")
-
+print("\n--- EVALUATION (SCIKIT-LEARN MODEL) ---")
 print("MAE:", mean_absolute_error(y_test, y_pred))
 print("MSE:", mean_squared_error(y_test, y_pred))
 print("R2 Score:", r2_score(y_test, y_pred))
@@ -107,10 +105,11 @@ plt.show()
 
 # DAY 6: MODEL IMPROVEMENT
 
-
-# Polynomial Features
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 
+# Polynomial Regression
 poly = PolynomialFeatures(degree=2)
 X_poly = poly.fit_transform(X)
 
@@ -120,39 +119,29 @@ X_train_p, X_test_p, y_train_p, y_test_p = train_test_split(
 
 lr_poly = LinearRegression()
 lr_poly.fit(X_train_p, y_train_p)
-
 y_pred_poly = lr_poly.predict(X_test_p)
 
 print("\nPolynomial R2:", r2_score(y_test_p, y_pred_poly))
 
-
 # Decision Tree
-from sklearn.tree import DecisionTreeRegressor
-
-dt = DecisionTreeRegressor()
+dt = DecisionTreeRegressor(random_state=42)
 dt.fit(X_train, y_train)
-
 y_pred_dt = dt.predict(X_test)
 
 print("Decision Tree R2:", r2_score(y_test, y_pred_dt))
 
-
 # Random Forest
-from sklearn.ensemble import RandomForestRegressor
-
-rf = RandomForestRegressor(n_estimators=100)
+rf = RandomForestRegressor(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
-
 y_pred_rf = rf.predict(X_test)
 
 print("Random Forest R2:", r2_score(y_test, y_pred_rf))
 
 
 
-# DAY 7: INTERPRETATION & INSIGHTS
+# DAY 7: INTERPRET & PRESENT
 
-
-print("\n--- MODEL COEFFICIENTS ---")
+print("\n--- LINEAR REGRESSION COEFFICIENTS ---")
 coef_df = pd.DataFrame({
     "Feature": X.columns,
     "Coefficient": lr.coef_
@@ -181,10 +170,10 @@ plt.show()
 print("\n--- BUSINESS INSIGHTS ---")
 
 top_feature = importance.iloc[0]["Feature"]
-print(f"Most important factor affecting sales: {top_feature}")
+print(f"Most important feature: {top_feature}")
 
-print("Marketing spend has strong positive impact on sales")
-print("Price negatively impacts sales")
-print("Random Forest gives best performance (non-linear relationships captured)")
+print("Marketing Spend positively impacts Sales")
+print("Price negatively impacts Sales")
+print("Random Forest performs best (captures complex patterns)")
 
 print("\n Project Completed Successfully!")
